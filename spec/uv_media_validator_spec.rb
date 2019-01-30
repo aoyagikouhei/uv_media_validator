@@ -150,4 +150,28 @@ RSpec.describe UvMediaValidator do
       expect(media.all?).to eq(true), "cause #{f}"
     end
   end
+
+  it "get_tw_validator" do
+    media = UvMediaValidator.get_tw_validator("test/tw_videos/41fps.mp4")
+    expect(media.class.name).to eq("UvMediaValidator::TwVideo")
+    expect(media.all?).to eq(true)
+
+    media = UvMediaValidator.get_tw_validator("test/tw_images/webp.webp")
+    expect(media.class.name).to eq("UvMediaValidator::TwImage")
+    expect(media.all?).to eq(true)
+
+    media = UvMediaValidator.get_tw_validator("test/tw_gifs/351frame.gif")
+    expect(media.class.name).to eq("UvMediaValidator::TwAgif")
+    expect(media.all?).to eq(false)
+  end
+
+  it "get_fb_validator" do
+    media = UvMediaValidator.get_fb_validator("test/fb_videos/avi.avi")
+    expect(media.class.name).to eq("UvMediaValidator::FbVideo")
+    expect(media.all?).to eq(true)
+
+    media = UvMediaValidator.get_fb_validator("test/fb_images/tiff.tiff")
+    expect(media.class.name).to eq("UvMediaValidator::FbImage")
+    expect(media.all?).to eq(true)
+  end
 end
