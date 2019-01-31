@@ -23,12 +23,16 @@ module UvMediaValidator
       @video_info = info
     end
 
+    def max_size
+      @sync_flag ? MAX_SYNC_SIZE : MAX_ASYNC_SIZE
+    end
+
     def video_info
       @video_info ||= FFMPEG::Movie.new(@path)
     end
     
     def file_size?
-      (@sync_flag ? MAX_SYNC_SIZE : MAX_ASYNC_SIZE) >= video_info.size
+      max_size >= video_info.size
     end
 
     def width?
