@@ -15,6 +15,10 @@ module UvMediaValidator
       @image_size = info
     end
 
+    def max_size
+      MAX_SIZE
+    end
+
     def image_size
       @image_size ||= ImageSize.path(@path)
     end
@@ -24,7 +28,7 @@ module UvMediaValidator
     end
 
     def file_size?
-      file_size <= MAX_SIZE
+      file_size <= max_size
     end
 
     def width?

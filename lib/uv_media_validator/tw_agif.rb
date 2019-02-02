@@ -16,6 +16,10 @@ module UvMediaValidator
       @gif_info = info
     end
 
+    def max_size
+      MAX_SIZE
+    end
+
     def file_size
       @file_size ||= FileTest.size?(@path)
     end

@@ -11,7 +11,12 @@ module UvMediaValidator
   def self.get_tw_validator(path, sync_flag: true)
     image_size = ImageSize.path(path)
     if image_size.format.nil?
-      return TwVideo.new(path, sync_flag: sync_flag)
+      movie = FFMPEG::Movie.new(path)
+      if movie.valid?
+        return TwVideo.new(path, sync_flag: sync_flag, info: movie)
+      else
+        return nil
+      end
     elsif image_size.format != :gif
       return TwImage.new(path, info: image_size)
     end
@@ -26,7 +31,12 @@ module UvMediaValidator
   def self.get_fb_validator(path, sync_flag: true)
     image_size = ImageSize.path(path)
     if image_size.format.nil?
-      return FbVideo.new(path, sync_flag: sync_flag)
+      movie = FFMPEG::Movie.new(path)
+      if movie.valid?
+        return FbVideo.new(path, sync_flag: sync_flag, info: movie)
+      else
+        return nil
+      end
     else
       return FbImage.new(path, info: image_size)
     end
