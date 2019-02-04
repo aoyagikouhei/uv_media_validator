@@ -59,15 +59,15 @@ module UvMediaValidator
     end
 
     def colorspace?
-      !COLORSPACE_ARRAY.include?(video_info.colorspace).nil?
+      COLORSPACE_ARRAY.include?(video_info.colorspace)
     end
 
     def audio_codec?
-      !AUDIO_CODEC_ARRAY.include?(video_info.audio_codec).nil?
+      AUDIO_CODEC_ARRAY.include?(video_info.audio_codec)
     end
 
     def audio_channels?
-      !AUDIO_CHANNLES_ARRAY.include?(video_info.audio_channels).nil?
+      AUDIO_CHANNLES_ARRAY.include?(video_info.audio_channels)
     end
 
     def all?

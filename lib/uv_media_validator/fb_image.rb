@@ -15,7 +15,7 @@ module UvMediaValidator
     end
 
     def format?
-      !FORMAT_ARRAY.include?(image_size.format).nil?
+      FORMAT_ARRAY.include?(image_size.format)
     end
 
     def all?

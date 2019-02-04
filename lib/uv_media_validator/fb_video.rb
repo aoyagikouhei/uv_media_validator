@@ -44,7 +44,7 @@ module UvMediaValidator
     end
 
     def format?
-      !FORMAT_ARRAY.include?(File.extname(@path).gsub(/\./, '')).nil?
+      FORMAT_ARRAY.include?(File.extname(@path).gsub(/\./, '').downcase.to_sym)
     end
 
     def all?
