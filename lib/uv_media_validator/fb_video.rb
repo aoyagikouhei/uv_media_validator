@@ -3,6 +3,9 @@ require 'image_size'
 module UvMediaValidator
   # https://developers.facebook.com/docs/graph-api/video-uploads?locale=ja_JP
   class FbVideo
+    include UvMediaValidator::Validator::FileSize
+    include UvMediaValidator::Validator::ViewSize
+
     MAX_SYNC_SIZE = 1_000_000_000
     MAX_ASYNC_SIZE = 10_000_000_000
     MAX_SYNC_DURATION = 1200.0
@@ -28,19 +31,20 @@ module UvMediaValidator
       @video_info ||= FFMPEG::Movie.new(@path)
     end
 
-    def file_size?
-      max_size >= video_info.size
+    def file_size
+      video_info.size
     end
 
     def duration?
       max_duration >= video_info.duration
     end
 
-    def aspect_ratio?
-      current_ratio = video_info.width > video_info.height ? 
-        video_info.width.to_f / video_info.height.to_f : 
-        video_info.height.to_f / video_info.width.to_f
-      MAX_ASPECT_RATIO >= current_ratio
+    def width
+      video_info.width
+    end
+
+    def height
+      video_info.height
     end
 
     def format?

@@ -3,6 +3,9 @@ require 'image_size'
 module UvMediaValidator
   # https://developer.twitter.com/en/docs/media/upload-media/uploading-media/media-best-practices
   class TwImage
+    include UvMediaValidator::Validator::FileSize
+    include UvMediaValidator::Validator::ViewSize
+
     MAX_SIZE = 5_000_000
     MIN_WIDTH = 5
     MIN_HEIGHT = 5
@@ -15,10 +18,6 @@ module UvMediaValidator
       @image_size = info
     end
 
-    def max_size
-      MAX_SIZE
-    end
-
     def image_size
       @image_size ||= ImageSize.path(@path)
     end
@@ -27,16 +26,12 @@ module UvMediaValidator
       @file_size ||= FileTest.size?(@path)
     end
 
-    def file_size?
-      file_size <= max_size
+    def width
+      image_size.w
     end
 
-    def width?
-      MIN_WIDTH <= image_size.w && image_size.w <= MAX_WIDTH
-    end
-
-    def height?
-      MIN_WIDTH <= image_size.h && image_size.h <= MAX_WIDTH
+    def height
+      image_size.h
     end
 
     def format?
@@ -44,7 +39,7 @@ module UvMediaValidator
     end
 
     def all?
-      file_size? && width? && height? && format?
+      file_size? && view_size? && format?
     end
   end
 end

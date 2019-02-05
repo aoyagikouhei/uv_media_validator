@@ -16,7 +16,7 @@ RSpec.describe UvMediaValidator do
     media = UvMediaValidator::TwImage.new("test/tw_images/1000_2.png")
     expect(media.file_size?).to eq(true)
     expect(media.width?).to eq(true)
-    expect(media.height?).to eq(false)
+    expect(media.min_height?).to eq(false)
     expect(media.format?).to eq(true)
     expect(media.all?).to eq(false)
   end
@@ -25,7 +25,7 @@ RSpec.describe UvMediaValidator do
     media = UvMediaValidator::TwImage.new("test/tw_images/150x9999.png")
     expect(media.file_size?).to eq(true)
     expect(media.width?).to eq(true)
-    expect(media.height?).to eq(false)
+    expect(media.max_height?).to eq(false)
     expect(media.format?).to eq(true)
     expect(media.all?).to eq(false)
   end
@@ -33,7 +33,7 @@ RSpec.describe UvMediaValidator do
   it "tw image bad min width" do
     media = UvMediaValidator::TwImage.new("test/tw_images/2_1000.png")
     expect(media.file_size?).to eq(true)
-    expect(media.width?).to eq(false)
+    expect(media.min_width?).to eq(false)
     expect(media.height?).to eq(true)
     expect(media.format?).to eq(true)
     expect(media.all?).to eq(false)
@@ -42,7 +42,7 @@ RSpec.describe UvMediaValidator do
   it "tw image bad max width" do
     media = UvMediaValidator::TwImage.new("test/tw_images/9999x150.png")
     expect(media.file_size?).to eq(true)
-    expect(media.width?).to eq(false)
+    expect(media.max_width?).to eq(false)
     expect(media.height?).to eq(true)
     expect(media.format?).to eq(true)
     expect(media.all?).to eq(false)
@@ -83,6 +83,102 @@ RSpec.describe UvMediaValidator do
     expect(media.height?).to eq(true)
     expect(media.frames?).to eq(false)
     expect(media.pixels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end
+
+  it "tw gif min width" do
+    media = UvMediaValidator::TwAgif.new("test/tw_gifs/3x100.gif")
+    expect(media.file_size?).to eq(true)
+    expect(media.min_width?).to eq(false)
+    expect(media.height?).to eq(true)
+    expect(media.frames?).to eq(true)
+    expect(media.pixels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end 
+
+  it "tw gif min height" do
+    media = UvMediaValidator::TwAgif.new("test/tw_gifs/100x3.gif")
+    expect(media.file_size?).to eq(true)
+    expect(media.width?).to eq(true)
+    expect(media.min_height?).to eq(false)
+    expect(media.frames?).to eq(true)
+    expect(media.pixels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end 
+
+  it "tw gif max width" do
+    media = UvMediaValidator::TwAgif.new("test/tw_gifs/1281x100.gif")
+    expect(media.file_size?).to eq(true)
+    expect(media.max_width?).to eq(false)
+    expect(media.height?).to eq(true)
+    expect(media.frames?).to eq(true)
+    expect(media.pixels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end 
+
+  it "tw gif max height" do
+    media = UvMediaValidator::TwAgif.new("test/tw_gifs/100x1081.gif")
+    expect(media.file_size?).to eq(true)
+    expect(media.width?).to eq(true)
+    expect(media.max_height?).to eq(false)
+    expect(media.frames?).to eq(true)
+    expect(media.pixels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end 
+
+  it "tw video min height" do
+    media = UvMediaValidator::TwVideo.new("test/tw_videos/32x18.mp4")
+    expect(media.file_size?).to eq(true)
+    expect(media.width?).to eq(true)
+    expect(media.min_height?).to eq(false)
+    expect(media.frame_rate?).to eq(true)
+    expect(media.duration?).to eq(false)
+    expect(media.aspect_ratio?).to eq(true)
+    expect(media.colorspace?).to eq(true)
+    expect(media.audio_codec?).to eq(true)
+    expect(media.audio_channels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end
+
+  it "tw video max height" do
+    media = UvMediaValidator::TwVideo.new("test/tw_videos/618x1100.mp4")
+    expect(media.file_size?).to eq(true)
+    expect(media.width?).to eq(true)
+    expect(media.max_height?).to eq(false)
+    expect(media.frame_rate?).to eq(true)
+    expect(media.duration?).to eq(false)
+    expect(media.aspect_ratio?).to eq(true)
+    expect(media.colorspace?).to eq(true)
+    expect(media.audio_codec?).to eq(true)
+    expect(media.audio_channels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end
+
+  it "tw video bad frame rate" do
+    media = UvMediaValidator::TwVideo.new("test/tw_videos/80frames.mp4")
+    expect(media.file_size?).to eq(true)
+    expect(media.width?).to eq(true)
+    expect(media.max_height?).to eq(true)
+    expect(media.frame_rate?).to eq(false)
+    expect(media.duration?).to eq(false)
+    expect(media.aspect_ratio?).to eq(true)
+    expect(media.colorspace?).to eq(true)
+    expect(media.audio_codec?).to eq(true)
+    expect(media.audio_channels?).to eq(true)
+    expect(media.all?).to eq(false)
+  end
+
+  it "tw video min width" do
+    media = UvMediaValidator::TwVideo.new("test/tw_videos/18x32.mp4")
+    expect(media.file_size?).to eq(true)
+    expect(media.min_width?).to eq(false)
+    expect(media.height?).to eq(true)
+    expect(media.frame_rate?).to eq(true)
+    expect(media.duration?).to eq(false)
+    expect(media.aspect_ratio?).to eq(true)
+    expect(media.colorspace?).to eq(true)
+    expect(media.audio_codec?).to eq(true)
+    expect(media.audio_channels?).to eq(true)
     expect(media.all?).to eq(false)
   end
 

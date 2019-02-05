@@ -3,6 +3,9 @@ require 'streamio-ffmpeg'
 module UvMediaValidator
   # https://developer.twitter.com/en/docs/media/upload-media/uploading-media/media-best-practices
   class TwVideo
+    include UvMediaValidator::Validator::FileSize
+    include UvMediaValidator::Validator::ViewSize
+
     MAX_SYNC_SIZE = 15_000_000
     MAX_ASYNC_SIZE = 512_000_000
     MIN_WIDTH = 32
@@ -30,17 +33,17 @@ module UvMediaValidator
     def video_info
       @video_info ||= FFMPEG::Movie.new(@path)
     end
+
+    def file_size
+      video_info.size
+    end
+
+    def width
+      video_info.width
+    end
     
-    def file_size?
-      max_size >= video_info.size
-    end
-
-    def width?
-      MIN_WIDTH <= video_info.width && video_info.width <= MAX_WIDTH
-    end
-
-    def height?
-      MIN_WIDTH <= video_info.height && video_info.height <= MAX_WIDTH
+    def height
+      video_info.height
     end
 
     def frame_rate?
@@ -49,13 +52,6 @@ module UvMediaValidator
 
     def duration?
       MIN_DURATION <= video_info.duration && video_info.duration <= MAX_DURATION
-    end
-
-    def aspect_ratio?
-      current_ratio = video_info.width > video_info.height ? 
-        video_info.width.to_f / video_info.height.to_f : 
-        video_info.height.to_f / video_info.width.to_f
-      MAX_ASPECT_RATIO >= current_ratio
     end
 
     def colorspace?
@@ -72,8 +68,7 @@ module UvMediaValidator
 
     def all?
       file_size? && 
-      width? && 
-      height? && 
+      view_size? && 
       frame_rate? && 
       duration? && 
       aspect_ratio? && 

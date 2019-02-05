@@ -1,4 +1,6 @@
 require "uv_media_validator/version"
+require "uv_media_validator/validator/file_size"
+require "uv_media_validator/validator/view_size"
 require "uv_media_validator/tw_image"
 require "uv_media_validator/tw_agif"
 require "uv_media_validator/tw_video"
