@@ -19,7 +19,7 @@ module UvMediaValidator
     COLORSPACE_ARRAY = %w(yuv420p yuvj420p)
     AUDIO_CODEC_ARRAY = [nil, 'aac']
     AUDIO_CHANNLES_ARRAY = [nil, 1, 2]
-    MAX_BIT_RATE = 60_000_000
+    MAX_BITRATE = 60_000_000
 
     def initialize(path, sync_flag: true, info: nil)
       @path = path
@@ -67,8 +67,8 @@ module UvMediaValidator
       AUDIO_CHANNLES_ARRAY.include?(video_info.audio_channels)
     end
 
-    def bit_rate?
-      MAX_BIT_RATE >= video_info.bitrate
+    def bitrate?
+      MAX_BITRATE >= video_info.bitrate
     end
 
     def all?
@@ -80,7 +80,7 @@ module UvMediaValidator
       colorspace? &&
       audio_codec? &&
       audio_channels? &&
-      bit_rate?
+      bitrate?
     end
   end
 end
