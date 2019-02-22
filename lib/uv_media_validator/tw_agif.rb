@@ -7,8 +7,8 @@ module UvMediaValidator
     include UvMediaValidator::Validator::ViewSize
 
     MAX_SIZE = 15_000_000
-    MIN_WIDTH = 5
-    MIN_HEIGHT = 5
+    MIN_WIDTH = 4
+    MIN_HEIGHT = 4
     MAX_WIDTH = 1280
     MAX_HEIGHT = 1080
     MAX_FRAMES = 350

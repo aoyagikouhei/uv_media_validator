@@ -7,8 +7,8 @@ module UvMediaValidator
     include UvMediaValidator::Validator::ViewSize
 
     MAX_SIZE = 5_000_000
-    MIN_WIDTH = 5
-    MIN_HEIGHT = 5
+    MIN_WIDTH = 4
+    MIN_HEIGHT = 4
     MAX_WIDTH = 8192
     MAX_HEIGHT = 8192
     FORMAT_ARRAY = %i(jpeg png gif webp)
