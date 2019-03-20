@@ -18,6 +18,7 @@ module UvMediaValidator
     MAX_ASPECT_RATIO = 3.0
     COLORSPACE_ARRAY = %w(yuv420p yuvj420p)
     AUDIO_CODEC_ARRAY = [nil, 'aac']
+    AUDIO_CODEC_PROFILE_ARRAY = [nil, 'LC']
     AUDIO_CHANNLES_ARRAY = [nil, 1, 2]
     MAX_BITRATE = 60_000_000
 
@@ -42,9 +43,14 @@ module UvMediaValidator
     def width
       video_info.width
     end
-    
+
     def height
       video_info.height
+    end
+
+    def audio_codec_profile
+      audio = video_info.metadata[:streams].select { |s| s[:codec_type] == 'audio' }.first
+      audio.nil? ? nil : audio[:profile]
     end
 
     def frame_rate?
@@ -63,6 +69,10 @@ module UvMediaValidator
       AUDIO_CODEC_ARRAY.include?(video_info.audio_codec)
     end
 
+    def audio_codec_profile?
+      AUDIO_CODEC_PROFILE_ARRAY.include?(audio_codec_profile)
+    end
+
     def audio_channels?
       AUDIO_CHANNLES_ARRAY.include?(video_info.audio_channels)
     end
@@ -79,6 +89,7 @@ module UvMediaValidator
       aspect_ratio? && 
       colorspace? &&
       audio_codec? &&
+      audio_codec_profile? &&
       audio_channels? &&
       bitrate?
     end
