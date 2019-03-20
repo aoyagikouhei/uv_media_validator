@@ -48,6 +48,11 @@ module UvMediaValidator
       video_info.height
     end
 
+    def audio_codec_profile
+      audio = video_info.metadata[:streams].select { |s| s[:codec_type] == 'audio' }.first
+      audio.nil? ? nil : audio[:profile]
+    end
+
     def frame_rate?
       MAX_FRAME_RATE >= video_info.frame_rate
     end
@@ -65,7 +70,7 @@ module UvMediaValidator
     end
 
     def audio_codec_profile?
-      AUDIO_CODEC_PROFILE_ARRAY.include?(video_info.metadata.dig(:streams, 1, :profile))
+      AUDIO_CODEC_PROFILE_ARRAY.include?(audio_codec_profile)
     end
 
     def audio_channels?
