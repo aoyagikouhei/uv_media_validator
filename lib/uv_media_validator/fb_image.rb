@@ -4,8 +4,10 @@ module UvMediaValidator
   # https://developers.facebook.com/docs/graph-api/photo-uploads/
   class FbImage
     include UvMediaValidator::Validator::FileSize
-
-    MAX_SIZE = 10_000_000
+    
+    # 10Mb
+    MAX_SIZE = 10 * 1024 * 1024
+    
     FORMAT_ARRAY = %i(jpeg png gif bmp tiff)
 
     def initialize(path, info: nil)

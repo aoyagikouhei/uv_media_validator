@@ -6,8 +6,12 @@ module UvMediaValidator
     include UvMediaValidator::Validator::FileSize
     include UvMediaValidator::Validator::ViewSize
 
-    MAX_SYNC_SIZE = 15_000_000
-    MAX_ASYNC_SIZE = 512_000_000
+    # 15Mb
+    MAX_SYNC_SIZE = 15 * 1024 * 1024
+
+    # 512Mb
+    MAX_ASYNC_SIZE = 512 * 1024 * 1024
+    
     MIN_WIDTH = 32
     MIN_HEIGHT = 32
     MAX_WIDTH = 1280

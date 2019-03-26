@@ -6,7 +6,9 @@ module UvMediaValidator
     include UvMediaValidator::Validator::FileSize
     include UvMediaValidator::Validator::ViewSize
 
-    MAX_SIZE = 15_000_000
+    # 15 Mb
+    MAX_SIZE = 15 * 1024 * 1024
+    
     MIN_WIDTH = 4
     MIN_HEIGHT = 4
     MAX_WIDTH = 1280

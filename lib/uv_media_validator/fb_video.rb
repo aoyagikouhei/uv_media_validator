@@ -5,9 +5,13 @@ module UvMediaValidator
   class FbVideo
     include UvMediaValidator::Validator::FileSize
     include UvMediaValidator::Validator::ViewSize
+    
+    # 1Gb
+    MAX_SYNC_SIZE = 1 * 1024 * 1024 * 1024
 
-    MAX_SYNC_SIZE = 1_000_000_000
-    MAX_ASYNC_SIZE = 10_000_000_000
+    # 10Gb
+    MAX_ASYNC_SIZE = 10 * 1024 * 1024 * 1024
+    
     MAX_SYNC_DURATION = 1200.0
     MAX_ASYNC_DURATION = 3600.0 * 4.0
     MAX_ASPECT_RATIO = 16.0 / 9.0
