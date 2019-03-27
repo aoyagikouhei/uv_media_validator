@@ -61,6 +61,8 @@ module UvMediaValidator
     def all?
       file_size? &&
       duration? &&
+      min_height? &&
+      min_width? &&
       aspect_ratio? &&
       format?
     end
