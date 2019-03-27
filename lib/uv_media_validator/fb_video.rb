@@ -11,6 +11,9 @@ module UvMediaValidator
 
     # 10Gb
     MAX_ASYNC_SIZE = 10 * 1024 * 1024 * 1024
+
+    MIN_WIDTH = 120
+    MIN_HEIGHT = 120
     
     MAX_SYNC_DURATION = 1200.0
     MAX_ASYNC_DURATION = 3600.0 * 4.0
