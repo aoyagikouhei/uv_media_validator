@@ -233,6 +233,27 @@ RSpec.describe UvMediaValidator do
     end
   end
 
+  it "fb image big file size" do
+    media = UvMediaValidator::FbImage.new("test/fb_images/101.png")
+    expect(media.file_size?).to eq(false)
+    expect(media.format?).to eq(true)
+    expect(media.all?).to eq(false)
+  end
+
+  it "fb image big file size (specified size)" do
+    media = UvMediaValidator::FbImage.new("test/fb_images/51.png", max_image_bytes: 5 * 1024 * 1024)
+    expect(media.file_size?).to eq(false)
+    expect(media.format?).to eq(true)
+    expect(media.all?).to eq(false)
+  end
+
+  it "fb image valid (specified size)" do
+    media = UvMediaValidator::FbImage.new("test/fb_images/50.png", max_image_bytes: 5 * 1024 * 1024)
+    expect(media.file_size?).to eq(true)
+    expect(media.format?).to eq(true)
+    expect(media.all?).to eq(true)
+  end
+
   it "fb image bad format" do
     media = UvMediaValidator::FbImage.new("test/fb_images/150x150.psd")
     expect(media.format?).to eq(false)

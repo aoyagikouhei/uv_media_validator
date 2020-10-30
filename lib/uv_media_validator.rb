@@ -30,7 +30,7 @@ module UvMediaValidator
     end
   end
 
-  def self.get_fb_validator(path, sync_flag: true)
+  def self.get_fb_validator(path, sync_flag: true, max_image_bytes: nil)
     image_size = ImageSize.path(path)
     if image_size.format.nil?
       movie = FFMPEG::Movie.new(path)
@@ -40,7 +40,7 @@ module UvMediaValidator
         return nil
       end
     else
-      return FbImage.new(path, info: image_size)
+      return FbImage.new(path, max_image_bytes: max_image_bytes, info: image_size)
     end
   end
 end
