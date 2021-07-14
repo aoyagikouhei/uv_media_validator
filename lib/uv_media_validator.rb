@@ -6,6 +6,8 @@ require "uv_media_validator/tw_agif"
 require "uv_media_validator/tw_video"
 require "uv_media_validator/fb_image"
 require "uv_media_validator/fb_video"
+require "uv_media_validator/ig_image"
+require "uv_media_validator/ig_video"
 
 module UvMediaValidator
   class Error < StandardError; end
@@ -41,6 +43,20 @@ module UvMediaValidator
       end
     else
       return FbImage.new(path, max_image_bytes: max_image_bytes, info: image_size)
+    end
+  end
+
+  def self.get_ig_validator(path, sync_flag: true, max_image_bytes: nil)
+    image_size = ImageSize.path(path)
+    if image_size.format.nil?
+      movie = FFMPEG::Movie.new(path)
+      if movie.valid?
+        return IgVideo.new(path, sync_flag: sync_flag, info: movie)
+      else
+        return nil
+      end
+    else
+      return IgImage.new(path, max_image_bytes: max_image_bytes, info: image_size)
     end
   end
 end
