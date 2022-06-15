@@ -11,8 +11,8 @@ module UvMediaValidator
 
     MIN_WIDTH = 4
     MIN_HEIGHT = 4
-    MAX_WIDTH = 8192
-    MAX_HEIGHT = 8192
+    MAX_WIDTH = 2048
+    MAX_HEIGHT = 2048
     FORMAT_ARRAY = %i(jpeg png gif webp)
 
     def initialize(path, info: nil)
