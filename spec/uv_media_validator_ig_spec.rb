@@ -47,6 +47,22 @@ RSpec.describe UvMediaValidator do
     expect(media.max_width?).to eq(true)
     expect(media.aspect_ratio?).to eq(true)
     expect(media.format?).to eq(true)
+
+    media = UvMediaValidator::IgImage.new("test/ig_images/722x376.jpg") # 1.9202 : 1
+    expect(media.file_size?).to eq(true)
+    expect(media.max_height?).to eq(true)
+    expect(media.max_width?).to eq(true)
+    expect(media.aspect_ratio?).to eq(false)
+    expect(media.format?).to eq(true)
+  end
+
+  it "ig image max aspect ratio (1.91 : 1) when round up" do
+    media = UvMediaValidator::IgImage.new("test/ig_images/800x418.jpg") # 1.9138 : 1
+    expect(media.file_size?).to eq(true)
+    expect(media.max_height?).to eq(true)
+    expect(media.max_width?).to eq(true)
+    expect(media.aspect_ratio?).to eq(true)
+    expect(media.format?).to eq(true)
   end
 
   it "ig image too big" do

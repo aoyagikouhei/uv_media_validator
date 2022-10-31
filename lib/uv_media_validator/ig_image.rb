@@ -51,7 +51,7 @@ module UvMediaValidator
     end
 
     def aspect_ratio?
-      (MIN_ASPECT_RATIO..MAX_ASPECT_RATIO).include?(width.fdiv(height))
+      (MIN_ASPECT_RATIO..MAX_ASPECT_RATIO).include?(width.fdiv(height).round(2, half: :up))
     end
 
     def all?
