@@ -7,7 +7,7 @@ module UvMediaValidator
     include UvMediaValidator::Validator::ViewSize
 
     # 8MiB
-    MAX_SIZE = 8 * 1000 * 1000
+    MAX_SIZE = 8 * 1024 * 1024
 
     MIN_ASPECT_RATIO = 4.fdiv(5)
     MAX_ASPECT_RATIO = 1.91.fdiv(1.0)
