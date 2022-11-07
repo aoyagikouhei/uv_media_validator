@@ -12,7 +12,7 @@ module UvMediaValidator
     MIN_ASPECT_RATIO = 4.fdiv(5)
     MAX_ASPECT_RATIO = 1.91.fdiv(1.0)
 
-    MIN_WIDTH = 1
+    MIN_WIDTH = 320
     MAX_WIDTH = 1440
 
     MIN_HEIGHT = 1
