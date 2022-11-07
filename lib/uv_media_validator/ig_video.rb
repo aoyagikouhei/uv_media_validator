@@ -17,7 +17,7 @@ module UvMediaValidator
     MAX_ASPECT_RATIO = 16.fdiv(9)
     MAX_WIDTH = 1920
     MAX_HEIGHT = MAX_WIDTH.fdiv(MIN_ASPECT_RATIO)
-    MAX_VIDEO_BITRATE = 5 * 1024 * 1024 # bps
+    MAX_VIDEO_BITRATE = 25 * 1024 * 1024 # bps
     MAX_DURATION = 60
     MIN_DURATION = 3
     MAX_SIZE = 100 * 1024 * 1024 # Bytes

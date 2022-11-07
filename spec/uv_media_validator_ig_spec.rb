@@ -167,7 +167,7 @@ RSpec.describe UvMediaValidator do
     expect(media.audio_sample_rate?).to eq(false)
     expect(media.audio_channels?).to eq(false)
     expect(media.video_codec?).to eq(true)
-    expect(media.video_bitrate?).to eq(false)
+    expect(media.video_bitrate?).to eq(true)
   end
 
   it "ig video high bitrate" do
@@ -183,7 +183,7 @@ RSpec.describe UvMediaValidator do
     expect(media.audio_sample_rate?).to eq(true)
     expect(media.audio_channels?).to eq(true)
     expect(media.video_codec?).to eq(true)
-    expect(media.video_bitrate?).to eq(false)
+    expect(media.video_bitrate?).to eq(true)
   end
 
   it "ig video wrong format with no audio" do
