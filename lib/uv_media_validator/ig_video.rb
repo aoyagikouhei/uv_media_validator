@@ -10,7 +10,7 @@ module UvMediaValidator
     AUDIO_CODEC = 'aac'
     MAX_AUDIO_SAMPLE_RATE = 48 * 1024
     MAX_AUDIO_CHANNELS = 2
-    VIDEO_CODEC_ARRAY = ['hevc', 'h264']
+    VIDEO_CODEC_ARRAY = ['h264']
     MIN_FRAME_RATE = 23
     MAX_FRAME_RATE = 60
     MIN_ASPECT_RATIO = 4.fdiv(5)
