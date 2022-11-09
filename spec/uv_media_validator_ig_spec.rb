@@ -166,7 +166,7 @@ RSpec.describe UvMediaValidator do
     expect(media.audio_codec?).to eq(true)
     expect(media.audio_sample_rate?).to eq(false)
     expect(media.audio_channels?).to eq(false)
-    expect(media.video_codec?).to eq(false)
+    expect(media.video_codec?).to eq(true)
     expect(media.video_bitrate?).to eq(true)
   end
 
