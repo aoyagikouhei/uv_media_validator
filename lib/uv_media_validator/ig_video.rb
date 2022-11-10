@@ -8,7 +8,7 @@ module UvMediaValidator
 
     FORMAT_ARRAY = %i(mp4 mov)
     AUDIO_CODEC = 'aac'
-    MAX_AUDIO_SAMPLE_RATE = 48 * 1024
+    MAX_AUDIO_SAMPLE_RATE = 48 * 1000
     MAX_AUDIO_CHANNELS = 2
     VIDEO_CODEC_ARRAY = ['hevc', 'h264']
     MIN_FRAME_RATE = 23
