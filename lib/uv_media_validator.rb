@@ -46,17 +46,17 @@ module UvMediaValidator
     end
   end
 
-  def self.get_ig_validator(path, sync_flag: true, max_image_bytes: nil)
+  def self.get_ig_validator(path, sync_flag: true, max_image_bytes: nil, reel_flag: false)
     image_size = ImageSize.path(path)
-    if image_size.format.nil?
-      movie = FFMPEG::Movie.new(path)
-      if movie.valid?
-        return IgVideo.new(path, sync_flag: sync_flag, info: movie)
-      else
-        return nil
-      end
-    else
-      return IgImage.new(path, max_image_bytes: max_image_bytes, info: image_size)
-    end
+    # リールは動画のみ
+    return nil if !image_size.format.nil? && reel_flag
+
+    return IgImage.new(path, max_image_bytes: max_image_bytes, info: image_size) unless image_size.format.nil?
+
+    movie = FFMPEG::Movie.new(path)
+    video_class = reel_flag ? IgReel : IgVideo
+    return video_class.new(path, sync_flag: sync_flag, info: movie) if movie.valid?
+
+    nil
   end
 end
