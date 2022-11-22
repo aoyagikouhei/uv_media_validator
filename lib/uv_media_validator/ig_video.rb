@@ -111,4 +111,12 @@ module UvMediaValidator
       video_bitrate?
     end
   end
+
+  class IgReel < IgVideo
+    MIN_ASPECT_RATIO = 0.01.fdiv(1)
+    MAX_ASPECT_RATIO = 10.fdiv(1)
+    MAX_DURATION = 60 * 15
+    MIN_DURATION = 3
+    MAX_SIZE = 1024 * 1024 * 1024 # Bytes
+  end
 end
