@@ -264,7 +264,7 @@ RSpec.describe UvMediaValidator do
       expect(media.duration?).to eq(true)
       expect(media.max_height?).to eq(true)
       expect(media.max_width?).to eq(true)
-      expect(media.aspect_ratio?).to eq(false)
+      expect(media.aspect_ratio?).to eq(true)
       expect(media.format?).to eq(true)
       expect(media.frame_rate_range?).to eq(true)
       expect(media.audio_codec?).to eq(true)
