@@ -1,4 +1,4 @@
-RSpec.describe UvMediaValidator do
+RSpec.describe 'Facebook' do
   it "has a version number" do
     expect(UvMediaValidator::VERSION).not_to be nil
   end
