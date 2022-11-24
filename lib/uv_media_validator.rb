@@ -54,9 +54,9 @@ module UvMediaValidator
     return IgImage.new(path, max_image_bytes: max_image_bytes, info: image_size) unless image_size.format.nil?
 
     movie = FFMPEG::Movie.new(path)
-    video_class = reel_flag ? IgReel : IgVideo
-    return video_class.new(path, sync_flag: sync_flag, info: movie) if movie.valid?
+    return nil unless movie.valid?
 
-    nil
+    video_class = reel_flag ? IgReel : IgVideo
+    video_class.new(path, sync_flag: sync_flag, info: movie)
   end
 end
