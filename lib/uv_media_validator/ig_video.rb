@@ -1,7 +1,6 @@
 require 'image_size'
 
 module UvMediaValidator
-
   class IgVideo
     include UvMediaValidator::Validator::FileSize
     include UvMediaValidator::Validator::ViewSize
@@ -29,7 +28,7 @@ module UvMediaValidator
     end
 
     def max_size
-      MAX_SIZE
+      self.class::MAX_SIZE
     end
 
     def video_info
@@ -41,7 +40,7 @@ module UvMediaValidator
     end
 
     def duration?
-      (MIN_DURATION..MAX_DURATION).include?(video_info.duration)
+      (self.class::MIN_DURATION..self.class::MAX_DURATION).include?(video_info.duration)
     end
 
     def width
@@ -53,18 +52,18 @@ module UvMediaValidator
     end
 
     def aspect_ratio?
-      (MIN_ASPECT_RATIO..MAX_ASPECT_RATIO).include?(width.fdiv(height))
+      (self.class::MIN_ASPECT_RATIO..self.class::MAX_ASPECT_RATIO).include?(width.fdiv(height))
     end
 
     def format?
-      FORMAT_ARRAY.include?(File.extname(@path).gsub(/\./, '').downcase.to_sym)
+      self.class::FORMAT_ARRAY.include?(File.extname(@path).gsub(/\./, '').downcase.to_sym)
     end
 
     def audio_codec?
       if video_info.audio_codec.nil?
         false
       else
-        video_info.audio_codec == AUDIO_CODEC
+        video_info.audio_codec == self.class::AUDIO_CODEC
       end
     end
 
@@ -72,7 +71,7 @@ module UvMediaValidator
       if video_info.audio_sample_rate.nil?
         false
       else
-        video_info.audio_sample_rate <= MAX_AUDIO_SAMPLE_RATE
+        video_info.audio_sample_rate <= self.class::MAX_AUDIO_SAMPLE_RATE
       end
     end
 
@@ -80,20 +79,20 @@ module UvMediaValidator
       if video_info.audio_channels.nil?
         false
       else
-        video_info.audio_channels <= MAX_AUDIO_CHANNELS
+        video_info.audio_channels <= self.class::MAX_AUDIO_CHANNELS
       end
     end
 
     def video_codec?
-      VIDEO_CODEC_ARRAY.include?(video_info.video_codec)
+      self.class::VIDEO_CODEC_ARRAY.include?(video_info.video_codec)
     end
 
     def video_bitrate?
-      video_info.video_bitrate <= MAX_VIDEO_BITRATE
+      video_info.video_bitrate <= self.class::MAX_VIDEO_BITRATE
     end
 
     def frame_rate_range?
-      (MIN_FRAME_RATE..MAX_FRAME_RATE).include?(video_info.frame_rate)
+      (self.class::MIN_FRAME_RATE..self.class::MAX_FRAME_RATE).include?(video_info.frame_rate)
     end
 
     def all?
@@ -110,5 +109,13 @@ module UvMediaValidator
       video_codec? &&
       video_bitrate?
     end
+  end
+
+  class IgReel < IgVideo
+    MIN_ASPECT_RATIO = 0.01.fdiv(1)
+    MAX_ASPECT_RATIO = 10.fdiv(1)
+    MAX_DURATION = 60 * 15
+    MIN_DURATION = 3
+    MAX_SIZE = 1024 * 1024 * 1024 # Bytes
   end
 end
