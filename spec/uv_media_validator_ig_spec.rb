@@ -4,19 +4,27 @@ RSpec.describe 'Instagram' do
   end
 
   it "get_ig_validator" do
-    media = UvMediaValidator.get_ig_validator("test/ig_videos/30fps_44100Hz_640x480.mp4")
+    media = UvMediaValidator.get_ig_feed_validator("test/ig_videos/30fps_44100Hz_640x480.mp4")
     expect(media.class.name).to eq("UvMediaValidator::IgVideo")
     expect(media.all?).to eq(true)
 
-    media = UvMediaValidator.get_ig_validator("test/ig_images/700x700.jpeg")
+    media = UvMediaValidator.get_ig_feed_validator("test/ig_images/700x700.jpeg")
     expect(media.class.name).to eq("UvMediaValidator::IgImage")
     expect(media.all?).to eq(true)
 
-    media = UvMediaValidator.get_ig_validator("test/ig_images/700x700.jpeg", reel_flag: true)
+    media = UvMediaValidator.get_ig_reel_validator("test/ig_images/700x700.jpeg")
     expect(media).to eq(nil)
 
-    media = UvMediaValidator.get_ig_validator("test/ig_videos/30fps_44100Hz_640x480.mp4", reel_flag: true)
+    media = UvMediaValidator.get_ig_reel_validator("test/ig_videos/30fps_44100Hz_640x480.mp4")
     expect(media.class.name).to eq("UvMediaValidator::IgReel")
+    expect(media.all?).to eq(true)
+
+    media = UvMediaValidator.get_ig_stories_validator("test/ig_videos/30fps_44100Hz_640x480.mp4")
+    expect(media.class.name).to eq("UvMediaValidator::IgStoriesVideo")
+    expect(media.all?).to eq(true)
+
+    media = UvMediaValidator.get_ig_stories_validator("test/ig_images/700x700.jpeg")
+    expect(media.class.name).to eq("UvMediaValidator::IgStoriesImage")
     expect(media.all?).to eq(true)
   end
 
