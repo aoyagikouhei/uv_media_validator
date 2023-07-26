@@ -322,4 +322,174 @@ RSpec.describe 'Instagram' do
       expect(media.video_bitrate?).to eq(true)
     end
   end
+
+  describe "Stories" do
+    describe "Image" do
+      it "ig image valid aspect ratio (1 : 2) and wrong format" do
+        media = UvMediaValidator::IgStoriesImage.new("test/ig_images/100x200.gif")
+        expect(media.file_size?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(false)
+      end
+
+      it "ig image valid aspect ratio (2 : 1) and wrong format" do
+        media = UvMediaValidator::IgStoriesImage.new("test/ig_images/200x100.tif")
+        expect(media.file_size?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(false)
+      end
+
+      it "ig image valid aspect ratio (4 : 5) and wrong format" do
+        media = UvMediaValidator::IgStoriesImage.new("test/ig_images/1440x1800.png")
+        expect(media.file_size?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(false)
+      end
+
+      it "ig image valid aspect ratio (1.91 : 1)" do
+        media = UvMediaValidator::IgStoriesImage.new("test/ig_images/1440x754.jpeg")
+        expect(media.file_size?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+
+        media = UvMediaValidator::IgStoriesImage.new("test/ig_images/722x376.jpg") # 1.9202 : 1
+        expect(media.file_size?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+      end
+
+      it "ig image too big" do
+        media = UvMediaValidator::IgStoriesImage.new("test/ig_images/2000x2000.jpeg")
+        expect(media.file_size?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+      end
+    end
+
+    describe "Video" do
+      it "ig video short duration" do
+        media = UvMediaValidator::IgStoriesVideo.new("test/ig_videos/1.8s.mp4")
+        expect(media.file_size?).to eq(true)
+        expect(media.duration?).to eq(false)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+        expect(media.frame_rate_range?).to eq(true)
+        expect(media.audio_codec?).to eq(true)
+        expect(media.audio_sample_rate?).to eq(true)
+        expect(media.audio_channels?).to eq(true)
+        expect(media.video_codec?).to eq(true)
+        expect(media.video_bitrate?).to eq(true)
+      end
+
+      it "ig video normal duration" do
+        media = UvMediaValidator::IgStoriesVideo.new("test/ig_videos/78s.mp4")
+        expect(media.file_size?).to eq(true)
+        expect(media.duration?).to eq(false)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+        expect(media.frame_rate_range?).to eq(true)
+        expect(media.audio_codec?).to eq(true)
+        expect(media.audio_sample_rate?).to eq(true)
+        expect(media.audio_channels?).to eq(true)
+        expect(media.video_codec?).to eq(true)
+        expect(media.video_bitrate?).to eq(true)
+      end
+
+      it "ig video less fps" do
+        media = UvMediaValidator::IgStoriesVideo.new("test/ig_videos/15fps.mp4")
+        expect(media.file_size?).to eq(true)
+        expect(media.duration?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+        expect(media.frame_rate_range?).to eq(false)
+        expect(media.audio_codec?).to eq(true)
+        expect(media.audio_sample_rate?).to eq(true)
+        expect(media.audio_channels?).to eq(true)
+        expect(media.video_codec?).to eq(true)
+        expect(media.video_bitrate?).to eq(true)
+      end
+
+      it "ig video valid aspect ratio (1 : 2)" do
+        media = UvMediaValidator::IgStoriesVideo.new("test/ig_videos/200x400.mp4")
+        expect(media.file_size?).to eq(true)
+        expect(media.duration?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+        expect(media.frame_rate_range?).to eq(true)
+        expect(media.audio_codec?).to eq(true)
+        expect(media.audio_sample_rate?).to eq(true)
+        expect(media.audio_channels?).to eq(true)
+        expect(media.video_codec?).to eq(true)
+        expect(media.video_bitrate?).to eq(true)
+      end
+
+      it "ig video valid aspect ratio (2 : 1)" do
+        media = UvMediaValidator::IgStoriesVideo.new("test/ig_videos/400x200.mp4")
+        expect(media.file_size?).to eq(true)
+        expect(media.duration?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+        expect(media.frame_rate_range?).to eq(true)
+        expect(media.audio_codec?).to eq(true)
+        expect(media.audio_sample_rate?).to eq(true)
+        expect(media.audio_channels?).to eq(true)
+        expect(media.video_codec?).to eq(true)
+        expect(media.video_bitrate?).to eq(true)
+      end
+
+      it "ig video too high spec" do
+        media = UvMediaValidator::IgStoriesVideo.new("test/ig_videos/8K-120fps-96kHz-6channels.mp4")
+        expect(media.file_size?).to eq(true)
+        expect(media.duration?).to eq(true)
+        expect(media.max_height?).to eq(false)
+        expect(media.max_width?).to eq(false)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+        expect(media.frame_rate_range?).to eq(false)
+        expect(media.audio_codec?).to eq(true)
+        expect(media.audio_sample_rate?).to eq(false)
+        expect(media.audio_channels?).to eq(false)
+        expect(media.video_codec?).to eq(true)
+        expect(media.video_bitrate?).to eq(true)
+      end
+
+      it "ig video high bitrate" do
+        media = UvMediaValidator::IgStoriesVideo.new("test/ig_videos/8Mbps_1920x1080.mp4")
+        expect(media.file_size?).to eq(true)
+        expect(media.duration?).to eq(true)
+        expect(media.max_height?).to eq(true)
+        expect(media.max_width?).to eq(true)
+        expect(media.aspect_ratio?).to eq(true)
+        expect(media.format?).to eq(true)
+        expect(media.frame_rate_range?).to eq(true)
+        expect(media.audio_codec?).to eq(true)
+        expect(media.audio_sample_rate?).to eq(true)
+        expect(media.audio_channels?).to eq(true)
+        expect(media.video_codec?).to eq(true)
+        expect(media.video_bitrate?).to eq(true)
+      end
+    end
+  end
 end
