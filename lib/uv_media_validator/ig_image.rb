@@ -58,4 +58,32 @@ module UvMediaValidator
       file_size? && max_height? && max_width? && aspect_ratio? && format?
     end
   end
+
+  # For Instagram stories image
+  class IgStoriesImage < IgImage
+    # There are no restrictions on aspect ratio.
+    def aspect_ratio?
+      # Set image info to self instance
+      height
+      width
+
+      true
+    end
+
+    # There are no restrictions on height.
+    def max_height?
+      # Set image info to self instance
+      height
+
+      true
+    end
+
+    # There are no restrictions on width.
+    def max_width?
+      # Set image info to self instance
+      width
+
+      true
+    end
+  end
 end
