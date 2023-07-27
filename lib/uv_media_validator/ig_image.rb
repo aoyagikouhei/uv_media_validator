@@ -47,7 +47,7 @@ module UvMediaValidator
     end
 
     def format?
-      FORMAT_ARRAY.include?(@image_size.format)
+      FORMAT_ARRAY.include?(image_size.format)
     end
 
     def aspect_ratio?
@@ -56,6 +56,24 @@ module UvMediaValidator
 
     def all?
       file_size? && max_height? && max_width? && aspect_ratio? && format?
+    end
+  end
+
+  # For Instagram stories image
+  class IgStoriesImage < IgImage
+    # There are no restrictions on aspect ratio.
+    def aspect_ratio?
+      true
+    end
+
+    # There are no restrictions on height.
+    def max_height?
+      true
+    end
+
+    # There are no restrictions on width.
+    def max_width?
+      true
     end
   end
 end

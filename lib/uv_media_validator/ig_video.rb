@@ -118,4 +118,10 @@ module UvMediaValidator
     MIN_DURATION = 3
     MAX_SIZE = 1024 * 1024 * 1024 # Bytes
   end
+
+  # For Instagram stories video
+  class IgStoriesVideo < IgVideo
+    MIN_ASPECT_RATIO = 0.01.fdiv(1)
+    MAX_ASPECT_RATIO = 10.fdiv(1)
+  end
 end
