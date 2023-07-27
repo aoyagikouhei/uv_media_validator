@@ -47,7 +47,7 @@ module UvMediaValidator
     end
 
     def format?
-      FORMAT_ARRAY.include?(@image_size.format)
+      FORMAT_ARRAY.include?(image_size.format)
     end
 
     def aspect_ratio?
@@ -63,26 +63,16 @@ module UvMediaValidator
   class IgStoriesImage < IgImage
     # There are no restrictions on aspect ratio.
     def aspect_ratio?
-      # Set image info to self instance
-      height
-      width
-
       true
     end
 
     # There are no restrictions on height.
     def max_height?
-      # Set image info to self instance
-      height
-
       true
     end
 
     # There are no restrictions on width.
     def max_width?
-      # Set image info to self instance
-      width
-
       true
     end
   end
