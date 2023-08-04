@@ -9,6 +9,7 @@ module UvMediaValidator
     AUDIO_CODEC = 'aac'
     MAX_AUDIO_SAMPLE_RATE = 48 * 1000
     MAX_AUDIO_CHANNELS = 2
+    MAX_AUDIO_BITRATE = 128 * 1024 # bps
     VIDEO_CODEC_ARRAY = ['hevc', 'h264']
     MIN_FRAME_RATE = 23
     MAX_FRAME_RATE = 60
@@ -81,6 +82,10 @@ module UvMediaValidator
       else
         video_info.audio_channels <= self.class::MAX_AUDIO_CHANNELS
       end
+    end
+
+    def audio_bitrate?
+      video_info.audio_bitrate <= self.class::MAX_AUDIO_BITRATE
     end
 
     def video_codec?
