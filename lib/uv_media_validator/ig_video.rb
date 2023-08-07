@@ -85,7 +85,11 @@ module UvMediaValidator
     end
 
     def audio_bitrate?
-      video_info.audio_bitrate <= self.class::MAX_AUDIO_BITRATE
+      if video_info.audio_bitrate.nil?
+        false
+      else
+        video_info.audio_bitrate <= self.class::MAX_AUDIO_BITRATE
+      end
     end
 
     def video_codec?
