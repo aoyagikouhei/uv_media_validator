@@ -8,6 +8,8 @@ require "uv_media_validator/fb_image"
 require "uv_media_validator/fb_video"
 require "uv_media_validator/ig_image"
 require "uv_media_validator/ig_video"
+require "uv_media_validator/pin_image"
+require "uv_media_validator/pin_video"
 
 module UvMediaValidator
   class Error < StandardError; end
@@ -77,5 +79,15 @@ module UvMediaValidator
     return nil unless movie.valid?
 
     IgStoriesVideo.new(path, sync_flag: sync_flag, info: movie)
+  end
+
+  def self.get_pin_validator(path, max_image_bytes: nil)
+    image_size = ImageSize.path(path)
+    return PinImage.new(path, max_image_bytes: max_image_bytes, info: image_size) unless image_size.format.nil?
+
+    movie = FFMPEG::Movie.new(path)
+    return nil unless movie.valid?
+
+    PinVideo.new(path, info: movie)
   end
 end
