@@ -13,9 +13,10 @@ module UvMediaValidator
     MIN_HEIGHT = 300
     MAX_HEIGHT = 9900
 
-    def initialize(path, info: nil)
+    def initialize(path, info: nil, format: nil)
       @path = path
       @image_size = info
+      @format = format.nil? ? FORMAT_ARRAY : format
     end
 
     def max_width
@@ -55,7 +56,7 @@ module UvMediaValidator
     end
 
     def format?
-      FORMAT_ARRAY.include?(image_size.format)
+      @format.include?(image_size.format)
     end
 
     def all?
