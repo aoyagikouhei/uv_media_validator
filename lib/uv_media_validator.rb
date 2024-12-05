@@ -81,9 +81,9 @@ module UvMediaValidator
     IgStoriesVideo.new(path, sync_flag: sync_flag, info: movie)
   end
 
-  def self.get_pin_validator(path)
+  def self.get_pin_validator(path, format: nil)
     image_size = ImageSize.path(path)
-    return PinImage.new(path, info: image_size) unless image_size.format.nil?
+    return PinImage.new(path, info: image_size, format:) unless image_size.format.nil?
 
     movie = FFMPEG::Movie.new(path)
     return nil unless movie.valid?
