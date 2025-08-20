@@ -59,7 +59,7 @@ module UvMediaValidator
     IgVideo.new(path, sync_flag: sync_flag, info: movie)
   end
 
-  def self.get_ig_reel_validator(path, sync_flag: true)
+  def self.get_ig_reel_validator(path, sync_flag: true, max_bytes: nil)
     image_size = ImageSize.path(path)
 
     # リールは動画のみ
@@ -68,7 +68,7 @@ module UvMediaValidator
     movie = FFMPEG::Movie.new(path)
     return nil unless movie.valid?
 
-    IgReel.new(path, sync_flag: sync_flag, info: movie)
+    IgReel.new(path, sync_flag: sync_flag, info: movie, max_bytes: max_bytes)
   end
 
   def self.get_ig_stories_validator(path, sync_flag: true, max_image_bytes: nil)
