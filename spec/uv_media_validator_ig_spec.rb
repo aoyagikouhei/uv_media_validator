@@ -378,6 +378,14 @@ RSpec.describe 'Instagram' do
       expect(media.video_codec?).to eq(true)
       expect(media.video_bitrate?).to eq(true)
     end
+
+    it 'ig reel with custom max_bytes' do
+      media_default = UvMediaValidator::IgReel.new('test/ig_videos/30fps_44100Hz_640x480.mp4')
+      expect(media_default.max_size).to eq(1024 * 1024 * 1024)
+
+      media_custom = UvMediaValidator::IgReel.new('test/ig_videos/30fps_44100Hz_640x480.mp4', max_bytes: 300 * 1024 * 1024)
+      expect(media_custom.max_size).to eq(300 * 1024 * 1024)
+    end
   end
 
   describe 'Stories' do
