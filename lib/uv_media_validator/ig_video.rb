@@ -126,7 +126,16 @@ module UvMediaValidator
     MAX_ASPECT_RATIO = 10.fdiv(1)
     MAX_DURATION = 60 * 15
     MIN_DURATION = 3
-    MAX_SIZE = 1024 * 1024 * 1024 # Bytes
+    MAX_SIZE = 1024 * 1024 * 1024 # Bytes (default: 1GB)
+
+    def initialize(path, sync_flag: true, info: nil, max_bytes: nil)
+      super(path, sync_flag: sync_flag, info: info)
+      @max_bytes = max_bytes
+    end
+
+    def max_size
+      @max_bytes || self.class::MAX_SIZE
+    end
   end
 
   # For Instagram stories video
