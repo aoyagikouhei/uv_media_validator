@@ -10,6 +10,9 @@ require "uv_media_validator/ig_image"
 require "uv_media_validator/ig_video"
 require "uv_media_validator/pin_image"
 require "uv_media_validator/pin_video"
+require "uv_media_validator/tt_image"
+require "uv_media_validator/tt_video"
+require "uv_media_validator/tt_thumbnail"
 
 module UvMediaValidator
   class Error < StandardError; end
@@ -89,5 +92,22 @@ module UvMediaValidator
     return nil unless movie.valid?
 
     PinVideo.new(path, info: movie)
+  end
+
+  def self.get_tt_validator(path, sync_flag: true)
+    image_size = ImageSize.path(path)
+    return TtImage.new(path, info: image_size) unless image_size.format.nil?
+
+    movie = FFMPEG::Movie.new(path)
+    return nil unless movie.valid?
+
+    TtVideo.new(path, sync_flag: sync_flag, info: movie)
+  end
+
+  def self.get_tt_thumbnail_validator(path)
+    image_size = ImageSize.path(path)
+    return nil if image_size.format.nil?
+
+    TtThumbnail.new(path, info: image_size)
   end
 end
