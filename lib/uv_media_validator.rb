@@ -86,7 +86,7 @@ module UvMediaValidator
 
   def self.get_pin_validator(path, format: nil)
     image_size = ImageSize.path(path)
-    return PinImage.new(path, info: image_size, format:) unless image_size.format.nil?
+    return PinImage.new(path, info: image_size, format: format) unless image_size.format.nil?
 
     movie = FFMPEG::Movie.new(path)
     return nil unless movie.valid?
