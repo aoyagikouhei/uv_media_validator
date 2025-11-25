@@ -1,26 +1,20 @@
 require 'image_size'
 
 module UvMediaValidator
-  class IgVideo
+  # TikTok video validator
+  # https://business-api.tiktok.com/portal/docs?id=1762228496095234
+  class TtVideo
     include UvMediaValidator::Validator::FileSize
     include UvMediaValidator::Validator::ViewSize
 
-    FORMAT_ARRAY = %i(mp4 mov)
-    AUDIO_CODEC = 'aac'
-    MAX_AUDIO_SAMPLE_RATE = 48 * 1000
-    MAX_AUDIO_CHANNELS = 2
-    MAX_AUDIO_BITRATE = 320 * 1024 # bps
-    VIDEO_CODEC_ARRAY = ['hevc', 'h264']
+    FORMAT_ARRAY = %i(mp4 mov webm)
     MIN_FRAME_RATE = 23
     MAX_FRAME_RATE = 60
-    MIN_ASPECT_RATIO = 4.fdiv(5)
-    MAX_ASPECT_RATIO = 16.fdiv(9)
-    MAX_WIDTH = 1920
-    MAX_HEIGHT = MAX_WIDTH.fdiv(MIN_ASPECT_RATIO)
-    MAX_VIDEO_BITRATE = 25 * 1024 * 1024 # bps
-    MAX_DURATION = 60
+    MIN_WIDTH = 360
+    MIN_HEIGHT = 360
+    MAX_DURATION = 600  # 10分
     MIN_DURATION = 3
-    MAX_SIZE = 100 * 1024 * 1024 # Bytes
+    MAX_SIZE = 1024 * 1024 * 1024  # 1GB
 
     def initialize(path, sync_flag: true, info: nil)
       @path = path
@@ -52,52 +46,16 @@ module UvMediaValidator
       video_info.height
     end
 
-    def aspect_ratio?
-      (self.class::MIN_ASPECT_RATIO..self.class::MAX_ASPECT_RATIO).include?(width.fdiv(height))
+    def min_width?
+      width >= self.class::MIN_WIDTH
+    end
+
+    def min_height?
+      height >= self.class::MIN_HEIGHT
     end
 
     def format?
       self.class::FORMAT_ARRAY.include?(File.extname(@path).gsub(/\./, '').downcase.to_sym)
-    end
-
-    def audio_codec?
-      if video_info.audio_codec.nil?
-        true
-      else
-        video_info.audio_codec == self.class::AUDIO_CODEC
-      end
-    end
-
-    def audio_sample_rate?
-      if video_info.audio_sample_rate.nil?
-        true
-      else
-        video_info.audio_sample_rate <= self.class::MAX_AUDIO_SAMPLE_RATE
-      end
-    end
-
-    def audio_channels?
-      if video_info.audio_channels.nil?
-        true
-      else
-        video_info.audio_channels <= self.class::MAX_AUDIO_CHANNELS
-      end
-    end
-
-    def audio_bitrate?
-      if video_info.audio_bitrate.nil?
-        true
-      else
-        video_info.audio_bitrate <= self.class::MAX_AUDIO_BITRATE
-      end
-    end
-
-    def video_codec?
-      self.class::VIDEO_CODEC_ARRAY.include?(video_info.video_codec)
-    end
-
-    def video_bitrate?
-      video_info.video_bitrate <= self.class::MAX_VIDEO_BITRATE
     end
 
     def frame_rate_range?
@@ -107,40 +65,10 @@ module UvMediaValidator
     def all?
       file_size? &&
       duration? &&
-      max_height? &&
-      max_width? &&
-      aspect_ratio? &&
+      min_width? &&
+      min_height? &&
       format? &&
-      frame_rate_range? &&
-      audio_codec? &&
-      audio_sample_rate? &&
-      audio_channels? &&
-      audio_bitrate? &&
-      video_codec? &&
-      video_bitrate?
+      frame_rate_range?
     end
-  end
-
-  class IgReel < IgVideo
-    MIN_ASPECT_RATIO = 0.01.fdiv(1)
-    MAX_ASPECT_RATIO = 10.fdiv(1)
-    MAX_DURATION = 60 * 15
-    MIN_DURATION = 3
-    MAX_SIZE = 1024 * 1024 * 1024 # Bytes (default: 1GB)
-
-    def initialize(path, sync_flag: true, info: nil, max_bytes: nil)
-      super(path, sync_flag: sync_flag, info: info)
-      @max_bytes = max_bytes
-    end
-
-    def max_size
-      @max_bytes || self.class::MAX_SIZE
-    end
-  end
-
-  # For Instagram stories video
-  class IgStoriesVideo < IgVideo
-    MIN_ASPECT_RATIO = 0.01.fdiv(1)
-    MAX_ASPECT_RATIO = 10.fdiv(1)
   end
 end

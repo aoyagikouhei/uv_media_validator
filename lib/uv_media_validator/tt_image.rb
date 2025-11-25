@@ -1,28 +1,30 @@
 require 'image_size'
 
 module UvMediaValidator
-  # https://developers.facebook.com/docs/instagram-api/reference/ig-user/media
-  class IgImage
+  # TikTok image validator
+  # https://business-api.tiktok.com/portal/docs?id=1803630424390658
+  class TtImage
     include UvMediaValidator::Validator::FileSize
     include UvMediaValidator::Validator::ViewSize
 
-    # 8MiB
-    MAX_SIZE = 8 * 1024 * 1024
+    # 20MB
+    MAX_SIZE = 20 * 1024 * 1024
 
-    MIN_ASPECT_RATIO = 4.fdiv(5)
-    MAX_ASPECT_RATIO = 1.91.fdiv(1.0)
+    # 最大枚数
+    MAX_COUNT = 35
 
-    MIN_WIDTH = 320
-    MAX_WIDTH = 1440
+    # 縦型最大解像度
+    PORTRAIT_MAX_WIDTH = 1080
+    PORTRAIT_MAX_HEIGHT = 1920
 
-    MIN_HEIGHT = 1
-    MAX_HEIGHT = MAX_WIDTH.fdiv(MIN_ASPECT_RATIO)
+    # 横型最大解像度
+    LANDSCAPE_MAX_WIDTH = 1920
+    LANDSCAPE_MAX_HEIGHT = 1080
 
-    FORMAT_ARRAY = %i(jpeg jpg)
+    FORMAT_ARRAY = %i(jpg jpeg webp)
 
-    def initialize(path, max_image_bytes: nil, info: nil)
+    def initialize(path, info: nil)
       @path = path
-      @max_image_bytes = max_image_bytes
       @image_size = info
     end
 
@@ -31,7 +33,7 @@ module UvMediaValidator
     end
 
     def max_size
-      @max_image_bytes || MAX_SIZE
+      MAX_SIZE
     end
 
     def file_size
@@ -50,30 +52,15 @@ module UvMediaValidator
       FORMAT_ARRAY.include?(image_size.format)
     end
 
-    def aspect_ratio?
-      (MIN_ASPECT_RATIO..MAX_ASPECT_RATIO).include?(width.fdiv(height).round(2, half: :up))
+    def resolution?
+      # 縦型または横型のいずれかの解像度制限に収まっているかチェック
+      portrait_valid = width <= PORTRAIT_MAX_WIDTH && height <= PORTRAIT_MAX_HEIGHT
+      landscape_valid = width <= LANDSCAPE_MAX_WIDTH && height <= LANDSCAPE_MAX_HEIGHT
+      portrait_valid || landscape_valid
     end
 
     def all?
-      file_size? && max_height? && max_width? && aspect_ratio? && format?
-    end
-  end
-
-  # For Instagram stories image
-  class IgStoriesImage < IgImage
-    # There are no restrictions on aspect ratio.
-    def aspect_ratio?
-      true
-    end
-
-    # There are no restrictions on height.
-    def max_height?
-      true
-    end
-
-    # There are no restrictions on width.
-    def max_width?
-      true
+      file_size? && resolution? && format?
     end
   end
 end
