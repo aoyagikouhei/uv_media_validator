@@ -13,6 +13,45 @@ RSpec.describe 'Facebook' do
     expect(media.all?).to eq(true)
   end
 
+  it "classifies a regular SVG as an image" do
+    expect(FFMPEG::Movie).not_to receive(:new)
+
+    media = UvMediaValidator.get_fb_validator("test/fixtures/plain.svg")
+    expect(media).to be_a(UvMediaValidator::FbImage)
+  end
+
+  it "classifies an MP4 containing embedded SVG metadata as a video" do
+    path = "test/fb_videos/embedded_svg_metadata.mp4"
+
+    expect(ImageSize.path(path).format).to eq(:svg)
+
+    media = UvMediaValidator.get_fb_validator(path)
+    expect(media).to be_a(UvMediaValidator::FbVideo)
+  end
+
+  it "returns nil for an invalid file" do
+    media = UvMediaValidator.get_fb_validator("test/fixtures/invalid_media.txt")
+    expect(media).to be_nil
+  end
+
+  it "preserves image classification for an invalid file containing SVG markup" do
+    path = "test/fixtures/invalid_with_embedded_svg.bin"
+
+    expect(ImageSize.path(path).format).to eq(:svg)
+
+    media = UvMediaValidator.get_fb_validator(path)
+    expect(media).to be_a(UvMediaValidator::FbImage)
+  end
+
+  it "classifies a valid FFmpeg stream without duration metadata as video" do
+    path = "test/fixtures/invalid_with_embedded_svg.bin"
+    movie = double("FFMPEG::Movie", valid?: true)
+    allow(FFMPEG::Movie).to receive(:new).with(path).and_return(movie)
+
+    media = UvMediaValidator.get_fb_validator(path)
+    expect(media).to be_a(UvMediaValidator::FbVideo)
+  end
+
   it_behaves_like 'video rotation support', UvMediaValidator::FbVideo
   it_behaves_like 'exif orientation support', UvMediaValidator::FbImage
 

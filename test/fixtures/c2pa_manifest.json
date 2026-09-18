@@ -1,0 +1,26 @@
+{
+  "claim_generator": "uv_media_validator test fixture/1.0",
+  "claim_generator_info": [
+    {
+      "name": "uv_media_validator test fixture",
+      "version": "1.0",
+      "icon": {
+        "format": "image/svg+xml",
+        "identifier": "plain.svg"
+      }
+    }
+  ],
+  "assertions": [
+    {
+      "label": "c2pa.actions",
+      "data": {
+        "actions": [
+          {
+            "action": "c2pa.created",
+            "digitalSourceType": "http://cv.iptc.org/newscodes/digitalsourcetype/digitalCapture"
+          }
+        ]
+      }
+    }
+  ]
+}
